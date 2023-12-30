@@ -21,7 +21,7 @@ public class EmployeeDTO {
 	
 	private long salary;
 
-	private String action;
+	private String Action;
 	
 	private Date loginAt;
 
