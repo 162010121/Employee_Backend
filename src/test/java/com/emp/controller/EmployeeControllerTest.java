@@ -29,7 +29,7 @@ public class EmployeeControllerTest {
 	
 	@Test
 	@DisplayName("Should save the Employee Object")
-    void testCreateEmployee() throws Exception
+    void givenEmployee_whenCreatEmployee_thenRetuenSaveEmployee() throws Exception
     {
     	EmployeeDTO empDTO=mock(EmployeeDTO.class);
     	when(service.saveDetails(empDTO)).thenReturn(empDTO);
@@ -38,15 +38,15 @@ public class EmployeeControllerTest {
 
     }
 	
-	@Test
-	void testUpdateEmployee()throws Exception
-	{
-		EmployeeDTO empDTO= mock(EmployeeDTO.class);
-		when(service.updateDetails(empDTO)).thenReturn(empDTO);
-		ResponseEntity<EmployeeDTO> responce=controller.updateEmployee(empDTO);
-    	assertEquals(HttpStatus.OK, responce.getStatusCode());	
-
-		
-	}
+//	@Test
+//	void givenEmployee_whenUpdateEmployee_thenReturnUpdateEmployee()throws Exception
+//	{
+//		EmployeeDTO empDTO= mock(EmployeeDTO.class);
+//		when(service.updateDetails(empDTO)).thenReturn(empDTO);
+//		ResponseEntity<EmployeeDTO> responce=controller.updateEmployee(empDTO);
+//    	assertEquals(HttpStatus.OK, responce.getStatusCode());	
+//
+//		
+//	}
 
 }

@@ -2,6 +2,7 @@ package com.emp.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.emp.dto.EmployeeDTO;
 import com.emp.dto.EmployeeLoginDTO;
 import com.emp.dto.EmployeeLogout;
+import com.emp.dto.LoginMesage;
 import com.emp.entity.EmployeeEntity;
 import com.emp.exception.UserCustomException;
 import com.emp.repo.EmployeeRepo;
@@ -29,7 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		try {
 
-			dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+			// dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 			EmployeeEntity entity = entityToDTO(dto);
 			repo.save(entity);
 		}
@@ -41,33 +43,32 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	}
 
-	@Override
-	public EmployeeDTO updateDetails(EmployeeDTO dto) {
-
-		try {
-			EmployeeEntity entity = new EmployeeEntity();
-			entity.setFristName(dto.getFristName());
-			entity.setLastName(dto.getLastName());
-			entity.setEmail(dto.getEmail());
-			entity.setPassword(dto.getPassword());
-			entity.setSalary(dto.getSalary());
-			entity.setDepartment(dto.getDepartment());
-			repo.save(entity);
-
-		} catch (Exception e) {
-			// TODO: handle exception
-
-		}
-		return dto;
-
-	}
+//	@Override
+//	public EmployeeDTO updateDetails(EmployeeDTO dto) {
+//
+//		try {
+//			EmployeeEntity entity = new EmployeeEntity();
+//			entity.setFristName(dto.getFristName());
+//			entity.setLastName(dto.getLastName());
+//			entity.setEmail(dto.getEmail());
+//			entity.setPassword(dto.getPassword());
+//			//entity.setSalary(dto.getSalary());
+//			entity.setDepartment(dto.getDepartment());
+//			repo.save(entity);
+//
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//
+//		}
+//		return dto;
+//
+//	}
 
 	@Override
 	public EmployeeEntity getEmployee(Long id) {
 
 		return repo.findById(id).get();
 	}
-
 
 //
 //	@Override
@@ -118,7 +119,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		entity.setEmail(dto.getEmail());
 		entity.setPassword(dto.getPassword());
 		entity.setDepartment(dto.getDepartment());
-		entity.setSalary(dto.getSalary());
+		// entity.setSalary(dto.getSalary());
 		return entity;
 
 	}
@@ -126,12 +127,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public EmployeeDTO employeeLogin(EmployeeLoginDTO loginDTO) {
 
-		if (loginDTO.getEmail() != null && !loginDTO.getEmail().isEmpty()) {
-			EmployeeDTO dto = new EmployeeDTO();
-
-			dto.setEmail(loginDTO.getEmail());
+		if(loginDTO.getEmail() ==null || loginDTO.getEmail().isEmpty())
+		{
+			EmployeeEntity entity=new EmployeeEntity();
+			entity.setEmail(loginDTO.getEmail());
+			repo.save(entity);
 		}
-		EmployeeEntity findByEmail = repo.findByEmailId(loginDTO.getEmail().toLowerCase());
+		
+		
+		EmployeeEntity findByEmail = repo.findByEmail(loginDTO.getEmail().toLowerCase());
 		if (null != findByEmail) {
 			//String securePassword = getSecurePassword(loginDTO.getPassword());
 
@@ -142,33 +146,63 @@ public class EmployeeServiceImpl implements EmployeeService {
 				employeeDTO.setLastName(findByEmail.getLastName());
 				employeeDTO.setEmail(findByEmail.getEmail());
 				employeeDTO.setPassword(findByEmail.getPassword());
-				employeeDTO.setLoginAt(new Date());
+				employeeDTO.setLoginAt(new Date(System.currentTimeMillis()));
 				employeeDTO.setDepartment(findByEmail.getDepartment());
 				// employeeDTO.setAction(null);
 				return employeeDTO;
 			} else {
-				throw new UserCustomException("Please enter correct password");
+				throw new UserCustomException("Please Enter Correct Username And Password");
 			}
 
 		} else {
 			throw new UserCustomException("no such record found");
 		}
 		
-		
+		 
 
 	}
 
 	@Override
 	public String logout(EmployeeLogout logout) {
-		
-		EmployeeDTO dto=new EmployeeDTO();
-		if(logout.getEmail().equals(dto.getEmail()) )
-		{
-			repo.deleteByEmailId(dto.getEmail());
+
+		EmployeeEntity entity = new EmployeeEntity();
+
+		if (entity.getEmail().equals(logout.getEmail())) {
+			repo.deleteByEmailId(entity.getEmail());
 		}
-		
-		
+
 		return "Employee Logout Successfully";
+	}
+
+//	@Override
+//	public LoginMesage employeeLogin(EmployeeLoginDTO loginDTO) {
+//
+//		// String msg = "";
+//		EmployeeEntity entity = repo.findByEmail(loginDTO.getEmail());
+//		if (entity != null) {
+//			String password = loginDTO.getPassword();
+//			String encodePassword = entity.getPassword();
+//			Boolean isPwdRight = passwordEncoder.matches(password, encodePassword);
+//			if (isPwdRight) {
+//				Optional<EmployeeEntity> empEntity = repo.findByEmailAndPassword(loginDTO.getEmail(), encodePassword);
+//				if (empEntity.isPresent()) {
+//					return new LoginMesage(entity.getFristName() + " " + "Succesfully Login", true);
+//				} else {
+//					return new LoginMesage("Login Failed", false);
+//				}
+//			} else {
+//				return new LoginMesage("Password Not Matched", false);
+//			}
+//
+//		} else {
+//			return new LoginMesage("Email not Exists", false);
+//		}
+//
+//	}
+
+	@Override
+	public EmployeeEntity updateDetails(EmployeeEntity empEntity, Long Id) {
+		return repo.save(empEntity);
 	}
 
 }

@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,13 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.emp.dto.EmployeeDTO;
 import com.emp.dto.EmployeeLoginDTO;
-import com.emp.dto.EmployeeLogout;
 import com.emp.entity.EmployeeEntity;
 import com.emp.service.EmployeeService;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/employee/")
+@RequestMapping("/employee")
 @Validated
 public class EmployeeController {
 
@@ -47,23 +43,34 @@ public class EmployeeController {
 
 	}
 
-	@PutMapping("/updateEmployee")
-	public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO empDTO) {
-		EmployeeDTO entity2 = service.updateDetails(empDTO);
-		return new ResponseEntity<>(entity2, HttpStatus.OK);
+	@PutMapping("/updateEmployee/{Id}")
+	public EmployeeEntity updateEmployee(@RequestBody EmployeeEntity employeeEntity, @PathVariable("Id") Long Id) {
+		EmployeeEntity entity2 = service.updateDetails(employeeEntity, Id);
+		return entity2;
 
 	}
+
+//	@PostMapping("/login")
+//	public ResponseEntity<?> loginUser(@RequestBody EmployeeLoginDTO loginDTO) {
+//		Authentication authentication = authenticationManager
+//				.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+//		SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//		service.employeeLogin(loginDTO);
+//		return new ResponseEntity<>( HttpStatus.OK);
+//
+//	}
 
 	@PostMapping("/login")
-	public ResponseEntity<String> loginUser(@RequestBody EmployeeLoginDTO loginDTO) {
-		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-
-		return new ResponseEntity<>("User Successfully Login", HttpStatus.OK);
-
+	public ResponseEntity<EmployeeDTO> loginEmployee(@RequestBody EmployeeLoginDTO loginDTO)
+	{
+		
+		EmployeeDTO employee=service.employeeLogin(loginDTO);
+		return new ResponseEntity<>(employee,HttpStatus.OK);
+		
+		
 	}
-
+	
 	@GetMapping("/getEmployee/{Id}")
 	public ResponseEntity<EmployeeEntity> getEmployee(@PathVariable("Id") Long Id)
 
@@ -95,15 +102,12 @@ public class EmployeeController {
 		return new ResponseEntity<>(entities, HttpStatus.OK);
 
 	}
-	
-	
+
 //	@PostMapping("/login")
 //	public ResponseEntity<EmployeeDTO> loginUser(@RequestBody EmployeeLoginDTO loging)
 //	{
 //		EmployeeDTO login=service.employeeLogin(loging);
 //		return new ResponseEntity<>(login,HttpStatus.OK);
 //	}
-	
-	
 
 }

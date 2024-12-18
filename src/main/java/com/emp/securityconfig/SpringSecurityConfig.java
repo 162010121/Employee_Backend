@@ -26,7 +26,7 @@ public class SpringSecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf().disable().cors().and().authorizeHttpRequests()
-				.antMatchers("/employee/add", "/employee/login","/employee/getAllEmployee","/employee/logout").permitAll().and().authorizeHttpRequests()
+				.antMatchers("/employee/add","/employee/updateEmployee/{Id}","/employee/getEmployee/{Id}","/employee/deleteEmployee/{Id}", "/employee/login","/employee/getAllEmployee","/employee/logout").permitAll().and().authorizeHttpRequests()
 				.antMatchers("/employee/**").authenticated().and()
 				.build();
 	}
