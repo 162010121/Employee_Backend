@@ -34,7 +34,7 @@ public class EmployeeController {
 	private EmployeeService service;
 
 	@Autowired
-	private AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticatiManager;
 
 	@PostMapping("/add")
 	public ResponseEntity<EmployeeDTO> saveDetails(@RequestBody @Valid EmployeeDTO dto) {
