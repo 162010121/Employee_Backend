@@ -5,7 +5,6 @@ import java.util.List;
 import com.emp.dto.EmployeeDTO;
 import com.emp.dto.EmployeeLoginDTO;
 import com.emp.dto.EmployeeLogout;
-import com.emp.dto.LoginMesage;
 import com.emp.entity.EmployeeEntity;
 
 public interface EmployeeService {

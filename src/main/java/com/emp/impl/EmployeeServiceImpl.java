@@ -2,7 +2,6 @@ package com.emp.impl;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.emp.dto.EmployeeDTO;
 import com.emp.dto.EmployeeLoginDTO;
 import com.emp.dto.EmployeeLogout;
-import com.emp.dto.LoginMesage;
 import com.emp.entity.EmployeeEntity;
 import com.emp.exception.UserCustomException;
 import com.emp.repo.EmployeeRepo;
