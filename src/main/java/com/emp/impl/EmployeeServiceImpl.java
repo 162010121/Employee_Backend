@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.emp.dto.EmployeeDTO;
 import com.emp.dto.EmployeeLoginDTO;
-import com.emp.dto.EmployeeLogout;
 import com.emp.entity.EmployeeEntity;
 import com.emp.exception.UserCustomException;
 import com.emp.repo.EmployeeRepo;
@@ -25,19 +24,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public EmployeeDTO saveDetails(EmployeeDTO dto) {
+	public EmployeeEntity saveDetails(EmployeeDTO dto) {
 
-		try {
-
-			// dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-			EmployeeEntity entity = entityToDTO(dto);
-			repo.save(entity);
-		}
-
-		catch (Exception e) {
-			// throw new UsernameNotFoundException("Exception Accured",e);
-		}
-		return dto;
+		userDetailsValidation(dto);
+		EmployeeEntity entity=entityToDTO(dto);
+		return repo.save(entity);
+		
 
 	}
 
@@ -125,17 +117,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public EmployeeDTO employeeLogin(EmployeeLoginDTO loginDTO) {
 
-		if(loginDTO.getEmail() ==null || loginDTO.getEmail().isEmpty())
-		{
-			EmployeeEntity entity=new EmployeeEntity();
+		if (loginDTO.getEmail() == null || loginDTO.getEmail().isEmpty()) {
+			EmployeeEntity entity = new EmployeeEntity();
 			entity.setEmail(loginDTO.getEmail());
 			repo.save(entity);
 		}
-		
-		
+
 		EmployeeEntity findByEmail = repo.findByEmail(loginDTO.getEmail().toLowerCase());
 		if (null != findByEmail) {
-			//String securePassword = getSecurePassword(loginDTO.getPassword());
+			// String securePassword = getSecurePassword(loginDTO.getPassword());
 
 			if (findByEmail.getPassword().equals(loginDTO.getPassword())) {
 				EmployeeDTO employeeDTO = new EmployeeDTO();
@@ -155,22 +145,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 		} else {
 			throw new UserCustomException("no such record found");
 		}
-		
-		 
 
 	}
 
-	@Override
-	public String logout(EmployeeLogout logout) {
-
-		EmployeeEntity entity = new EmployeeEntity();
-
-		if (entity.getEmail().equals(logout.getEmail())) {
-			repo.deleteByEmailId(entity.getEmail());
-		}
-
-		return "Employee Logout Successfully";
-	}
+	
 
 //	@Override
 //	public LoginMesage employeeLogin(EmployeeLoginDTO loginDTO) {
@@ -197,6 +175,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 //		}
 //
 //	}
+	
+	void userDetailsValidation(EmployeeDTO employeeDTO) {
+		if (employeeDTO.getFristName() ==null|| employeeDTO.getFristName().isEmpty()) {
+			throw new UserCustomException("please provid valid firstName");
+		}
+		if (employeeDTO.getLastName() ==null|| employeeDTO.getLastName().isEmpty()) {
+			throw new UserCustomException("please provid valid LastName");
+		}
+		if (employeeDTO.getEmail() ==null|| employeeDTO.getEmail().isEmpty()) {
+			throw new UserCustomException("please provid valid email");
+		}
+
+		if (employeeDTO.getPassword()==null || employeeDTO.getPassword().isEmpty()) {
+			throw new UserCustomException("please provid valid password");
+		}
+
+		EmployeeEntity findByEmail = repo.findByEmail(employeeDTO.getEmail());
+		if (null != findByEmail) {
+			throw new UserCustomException(" User Already Existed");
+		}
+	}
 
 	@Override
 	public EmployeeEntity updateDetails(EmployeeEntity empEntity, Long Id) {

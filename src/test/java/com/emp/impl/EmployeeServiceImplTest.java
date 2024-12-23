@@ -67,7 +67,7 @@ public class EmployeeServiceImplTest {
 //		  dto.setSalary(10000); dto.setDepartment("IA");
 
 		when(repository.save(Mockito.any())).thenReturn(entity);
-		EmployeeDTO empDTO = service.saveDetails(dto);
+		EmployeeEntity empDTO = service.saveDetails(dto);
 		assertNotEquals(entity, empDTO);
 
 	}

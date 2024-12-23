@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
@@ -29,6 +30,8 @@ public class EmployeeEntity {
 	@Column(name = "lastName")
 	private String lastName;
 
+	
+	@NotNull
 	@Column(name = "email")
 	private String email;
 

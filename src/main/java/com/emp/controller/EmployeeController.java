@@ -37,8 +37,8 @@ public class EmployeeController {
 	private AuthenticationManager authenticatiManager;
 
 	@PostMapping("/add")
-	public ResponseEntity<EmployeeDTO> saveDetails(@RequestBody @Valid EmployeeDTO dto) {
-		EmployeeDTO entity2 = service.saveDetails(dto);
+	public ResponseEntity<EmployeeEntity> saveDetails(@RequestBody @Valid EmployeeDTO dto) {
+		EmployeeEntity entity2 = service.saveDetails(dto);
 		return new ResponseEntity<>(entity2, HttpStatus.CREATED);
 
 	}
@@ -62,15 +62,13 @@ public class EmployeeController {
 //	}
 
 	@PostMapping("/login")
-	public ResponseEntity<EmployeeDTO> loginEmployee(@RequestBody EmployeeLoginDTO loginDTO)
-	{
-		
-		EmployeeDTO employee=service.employeeLogin(loginDTO);
-		return new ResponseEntity<>(employee,HttpStatus.OK);
-		
-		
+	public ResponseEntity<EmployeeDTO> loginEmployee(@RequestBody EmployeeLoginDTO loginDTO) {
+
+		EmployeeDTO employee = service.employeeLogin(loginDTO);
+		return new ResponseEntity<>(employee, HttpStatus.OK);
+
 	}
-	
+
 	@GetMapping("/getEmployee/{Id}")
 	public ResponseEntity<EmployeeEntity> getEmployee(@PathVariable("Id") Long Id)
 
@@ -110,4 +108,5 @@ public class EmployeeController {
 //		return new ResponseEntity<>(login,HttpStatus.OK);
 //	}
 
+	
 }

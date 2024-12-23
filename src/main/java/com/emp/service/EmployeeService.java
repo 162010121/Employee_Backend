@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.emp.dto.EmployeeDTO;
 import com.emp.dto.EmployeeLoginDTO;
-import com.emp.dto.EmployeeLogout;
 import com.emp.entity.EmployeeEntity;
 
 public interface EmployeeService {
@@ -20,12 +19,10 @@ public interface EmployeeService {
 //	public List<EmployeeDTO> getAllEmployee();
 //
 //	public EmployeeDTO findByFristnameAndLastname(String firstName, String lastName);
-	
-	
-	
-	public EmployeeDTO saveDetails(EmployeeDTO empDTO);
 
-	public EmployeeEntity updateDetails(EmployeeEntity empEntity,Long Id);
+	public EmployeeEntity saveDetails(EmployeeDTO empDTO);
+
+	public EmployeeEntity updateDetails(EmployeeEntity empEntity, Long Id);
 
 	public EmployeeEntity getEmployee(Long id);
 
@@ -34,11 +31,8 @@ public interface EmployeeService {
 	public List<EmployeeEntity> getAllEmployee();
 
 	public EmployeeEntity findByFristnameAndLastname(String firstName, String lastName);
-	
-	//public LoginMesage employeeLogin(EmployeeEntity loginDTO);
-	
+
 	public EmployeeDTO employeeLogin(EmployeeLoginDTO loginDTO);
-	
-	public String logout(EmployeeLogout logout);
+
 
 }
