@@ -22,32 +22,41 @@ public class EmployeeEntity {
 	@Column(name = "Id")
 	private long Id;
 
-	
-	@Column(name = "fristName")
-	private String fristName;
+	@Column(name = "firstName")
+	private String firstName;
 
-	
 	@Column(name = "lastName")
 	private String lastName;
 
-	
 	@NotNull
 	@Column(name = "email")
 	private String email;
 
-	
-	@Column(name = "deparment")
-	private String department;
-
-	
 	@Column(name = "action")
 	private String action;
 
-
 	@Column(name = "password")
 	private String password;
+	
+	@Column(name = "salary")
+	private double salary;
+	
+	@Column(name = "confirmPassword")
+	private String confirmPassword;
+	
+	@Column(name = "doorNumber")
+	private String doorNumber;
 
-//	@Column(name = "created_at")
-//	private Date loginAt;
+	@Column(name = "area")
+	private String area;
+
+	@Column(name = "city")
+	private String city;
+	
+	@Column(name = "pincode")
+	private long pincode;
+
+	@Column(name = "state")
+	private String state;
 
 }

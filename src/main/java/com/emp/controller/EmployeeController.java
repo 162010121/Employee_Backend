@@ -36,7 +36,7 @@ public class EmployeeController {
 	@Autowired
 	private AuthenticationManager authenticatiManager;
 
-	@PostMapping("/add")
+	@PostMapping("/register")
 	public ResponseEntity<EmployeeEntity> saveDetails(@RequestBody @Valid EmployeeDTO dto) {
 		EmployeeEntity entity2 = service.saveDetails(dto);
 		return new ResponseEntity<>(entity2, HttpStatus.CREATED);
@@ -80,8 +80,11 @@ public class EmployeeController {
 	}
 
 	@DeleteMapping("/deleteEmployee/{Id}")
-	public void deleteEmployee(@PathVariable("Id") Long Id) {
+	public String deleteEmployee(@PathVariable("Id") Long Id) {
 		service.deleteEmployee(Id);
+
+		return "Successfully Delete Id" + " " + " " + Id;
+
 	}
 
 	@GetMapping("/getAllEmployee")
@@ -108,5 +111,4 @@ public class EmployeeController {
 //		return new ResponseEntity<>(login,HttpStatus.OK);
 //	}
 
-	
 }

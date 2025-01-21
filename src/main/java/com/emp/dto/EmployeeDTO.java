@@ -9,22 +9,23 @@ public class EmployeeDTO {
 	
 	private long Id;
 	
-	private String fristName;
+	private String firstName;
 
 	private String lastName;
 
 	private String email;
 
 	private String password;
-	
-	private String department;
-	
-	private long salary;
+		
+	private String confirmPassword;
+
+	private double salary;
 
 	private String Action;
 	
 	private Date loginAt;
-
+	
+	
 
 
 }

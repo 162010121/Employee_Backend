@@ -27,9 +27,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public EmployeeEntity saveDetails(EmployeeDTO dto) {
 
 		userDetailsValidation(dto);
-		EmployeeEntity entity=entityToDTO(dto);
+
+		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+		dto.setConfirmPassword(passwordEncoder.encode(dto.getPassword()));
+
+		EmployeeEntity entity = entityToDTO(dto);
+
 		return repo.save(entity);
-		
 
 	}
 
@@ -81,6 +85,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 //	}
 
 	public EmployeeEntity getEmployee1(Long id) {
+
 		return repo.findById(id).get();
 	}
 
@@ -104,12 +109,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	public EmployeeEntity entityToDTO(EmployeeDTO dto) {
 		EmployeeEntity entity = new EmployeeEntity();
-		entity.setFristName(dto.getFristName());
+		entity.setFirstName(dto.getFirstName());
 		entity.setLastName(dto.getLastName());
 		entity.setEmail(dto.getEmail());
 		entity.setPassword(dto.getPassword());
-		entity.setDepartment(dto.getDepartment());
-		// entity.setSalary(dto.getSalary());
+		entity.setConfirmPassword(dto.getConfirmPassword());
+		entity.setSalary(dto.getSalary());
+
 		return entity;
 
 	}
@@ -130,12 +136,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 			if (findByEmail.getPassword().equals(loginDTO.getPassword())) {
 				EmployeeDTO employeeDTO = new EmployeeDTO();
 				employeeDTO.setId(findByEmail.getId());
-				employeeDTO.setFristName(findByEmail.getFristName());
+				employeeDTO.setFirstName(findByEmail.getFirstName());
 				employeeDTO.setLastName(findByEmail.getLastName());
 				employeeDTO.setEmail(findByEmail.getEmail());
 				employeeDTO.setPassword(findByEmail.getPassword());
 				employeeDTO.setLoginAt(new Date(System.currentTimeMillis()));
-				employeeDTO.setDepartment(findByEmail.getDepartment());
+				employeeDTO.setSalary(findByEmail.getSalary());
+				employeeDTO.setConfirmPassword(findByEmail.getConfirmPassword());
 				// employeeDTO.setAction(null);
 				return employeeDTO;
 			} else {
@@ -147,8 +154,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 
 	}
-
-	
 
 //	@Override
 //	public LoginMesage employeeLogin(EmployeeLoginDTO loginDTO) {
@@ -175,19 +180,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 //		}
 //
 //	}
-	
+
 	void userDetailsValidation(EmployeeDTO employeeDTO) {
-		if (employeeDTO.getFristName() ==null|| employeeDTO.getFristName().isEmpty()) {
+		if (employeeDTO.getFirstName() == null || employeeDTO.getFirstName().isEmpty()) {
 			throw new UserCustomException("please provid valid firstName");
 		}
-		if (employeeDTO.getLastName() ==null|| employeeDTO.getLastName().isEmpty()) {
+		if (employeeDTO.getLastName() == null || employeeDTO.getLastName().isEmpty()) {
 			throw new UserCustomException("please provid valid LastName");
 		}
-		if (employeeDTO.getEmail() ==null|| employeeDTO.getEmail().isEmpty()) {
+		if (employeeDTO.getEmail() == null || employeeDTO.getEmail().isEmpty()) {
 			throw new UserCustomException("please provid valid email");
 		}
 
-		if (employeeDTO.getPassword()==null || employeeDTO.getPassword().isEmpty()) {
+		if (employeeDTO.getPassword() == null || employeeDTO.getPassword().isEmpty()) {
 			throw new UserCustomException("please provid valid password");
 		}
 
@@ -195,6 +200,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 		if (null != findByEmail) {
 			throw new UserCustomException(" User Already Existed");
 		}
+		if (!employeeDTO.getPassword().equals(employeeDTO.getConfirmPassword()))
+			throw new UserCustomException(" Password and Confirm Password Not Matched...!");
+
+		{
+
+		}
+
 	}
 
 	@Override
