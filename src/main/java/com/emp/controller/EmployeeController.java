@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.emp.dto.EmployeeDTO;
 import com.emp.dto.EmployeeLoginDTO;
+import com.emp.dto.UserRequest;
 import com.emp.entity.EmployeeEntity;
 import com.emp.service.EmployeeService;
 
@@ -80,10 +81,9 @@ public class EmployeeController {
 	}
 
 	@DeleteMapping("/deleteEmployee/{Id}")
-	public String deleteEmployee(@PathVariable("Id") Long Id) {
-		service.deleteEmployee(Id);
-
-		return "Successfully Delete Id" + " " + " " + Id;
+	public UserRequest deleteEmployee(@PathVariable("Id") Long Id) {
+		UserRequest user = service.deleteEmployee(Id);
+		return user;
 
 	}
 
@@ -103,6 +103,8 @@ public class EmployeeController {
 		return new ResponseEntity<>(entities, HttpStatus.OK);
 
 	}
+
+
 
 //	@PostMapping("/login")
 //	public ResponseEntity<EmployeeDTO> loginUser(@RequestBody EmployeeLoginDTO loging)

@@ -2,6 +2,7 @@ package com.emp.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.emp.dto.EmployeeDTO;
 import com.emp.dto.EmployeeLoginDTO;
+
+import com.emp.dto.UserRequest;
 import com.emp.entity.EmployeeEntity;
 import com.emp.exception.UserCustomException;
 import com.emp.repo.EmployeeRepo;
@@ -90,9 +93,29 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public void deleteEmployee(Long id) {
+	public UserRequest deleteEmployee(Long id) {
+		UserRequest request = new UserRequest();
+		try {
+			Optional<EmployeeEntity> userOptional = repo.findById(id);
+			if (userOptional.isPresent()) {
+				repo.deleteById(id);
+				request.setStatusCode(200);
+				request.setMessage(id + " " + "User Successfully Deleted");
+				request.setTimestamp(new Date(System.currentTimeMillis()));
+			} else {
+				request.setStatusCode(404);
+				request.setError(id + " " + "User Not Found");
+				request.setTimestamp(new Date(System.currentTimeMillis()));
 
-		repo.deleteById(id);
+			}
+
+		} catch (Exception e) {
+			request.setStatusCode(500);
+			request.setError("Error occurred while deleting user: " + e.getMessage());
+
+		}
+		return request;
+
 	}
 
 	@Override
@@ -132,7 +155,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 		EmployeeEntity findByEmail = repo.findByEmail(loginDTO.getEmail().toLowerCase());
 		if (null != findByEmail) {
 			// String securePassword = getSecurePassword(loginDTO.getPassword());
-
 			if (findByEmail.getPassword().equals(loginDTO.getPassword())) {
 				EmployeeDTO employeeDTO = new EmployeeDTO();
 				employeeDTO.setId(findByEmail.getId());
@@ -200,11 +222,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 		if (null != findByEmail) {
 			throw new UserCustomException(" User Already Existed");
 		}
-		if (!employeeDTO.getPassword().equals(employeeDTO.getConfirmPassword()))
-			throw new UserCustomException(" Password and Confirm Password Not Matched...!");
-
-		{
-
+		if (!employeeDTO.getPassword().equals(employeeDTO.getConfirmPassword())) {
+			throw new UserCustomException("Password Confirm Password Not Matched...!");
 		}
 
 	}

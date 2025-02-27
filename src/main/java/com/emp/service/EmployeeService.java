@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.emp.dto.EmployeeDTO;
 import com.emp.dto.EmployeeLoginDTO;
+import com.emp.dto.UserRequest;
 import com.emp.entity.EmployeeEntity;
 
 public interface EmployeeService {
@@ -26,13 +27,14 @@ public interface EmployeeService {
 
 	public EmployeeEntity getEmployee(Long id);
 
-	public void deleteEmployee(Long id);
+	public UserRequest deleteEmployee(Long id);
 
 	public List<EmployeeEntity> getAllEmployee();
 
 	public EmployeeEntity findByFristnameAndLastname(String firstName, String lastName);
 
 	public EmployeeDTO employeeLogin(EmployeeLoginDTO loginDTO);
+	
 
 
 }

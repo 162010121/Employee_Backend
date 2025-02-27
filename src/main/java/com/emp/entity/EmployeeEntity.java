@@ -37,26 +37,11 @@ public class EmployeeEntity {
 
 	@Column(name = "password")
 	private String password;
-	
+
 	@Column(name = "salary")
 	private double salary;
-	
+
 	@Column(name = "confirmPassword")
 	private String confirmPassword;
-	
-	@Column(name = "doorNumber")
-	private String doorNumber;
-
-	@Column(name = "area")
-	private String area;
-
-	@Column(name = "city")
-	private String city;
-	
-	@Column(name = "pincode")
-	private long pincode;
-
-	@Column(name = "state")
-	private String state;
 
 }
