@@ -21,6 +21,9 @@ public interface EmployeeRepo extends JpaRepository<EmployeeEntity, Long> {
 	@Query(value = " SELECT * FROM employee ud WHERE ud.email = :email ", nativeQuery = true)
 	EmployeeEntity findByEmail(@Param(value = "email") String email);
 
+	Optional<EmployeeEntity> findById(@Param(value = "Id") long email);
+
+	
 	Optional<EmployeeEntity> findByEmailAndPassword(String email, String password);
 
 	@Transactional

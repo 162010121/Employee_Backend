@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.emp.dto.ChangePassword;
 import com.emp.dto.EmployeeDTO;
 import com.emp.dto.EmployeeLoginDTO;
 
@@ -31,8 +32,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		userDetailsValidation(dto);
 
-		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-		dto.setConfirmPassword(passwordEncoder.encode(dto.getPassword()));
+		// dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+		// dto.setConfirmPassword(passwordEncoder.encode(dto.getPassword()));
 
 		EmployeeEntity entity = entityToDTO(dto);
 
@@ -231,6 +232,26 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public EmployeeEntity updateDetails(EmployeeEntity empEntity, Long Id) {
 		return repo.save(empEntity);
+	}
+
+	@Override
+	public void changePassword(String email, ChangePassword changePassword) {
+		EmployeeEntity entity = repo.findByEmail(email);
+		if (entity == null) {
+			throw new UserCustomException("User not found with email: " + email);
+		}
+
+		if (changePassword.getNewPassword() == null || changePassword.getNewPassword().isEmpty()) {
+			throw new UserCustomException("New password cannot be empty");
+		}
+		if (!changePassword.getNewPassword().equals(changePassword.getConfirmPassword())) {
+			throw new UserCustomException("New password and confirm password do not match");
+		}
+
+		entity.setPassword(changePassword.getNewPassword());
+		entity.setConfirmPassword(changePassword.getConfirmPassword());
+		repo.save(entity);
+
 	}
 
 }

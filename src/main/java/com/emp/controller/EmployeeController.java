@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,11 +20,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.emp.dto.ChangePassword;
 import com.emp.dto.EmployeeDTO;
 import com.emp.dto.EmployeeLoginDTO;
 import com.emp.dto.UserRequest;
 import com.emp.entity.EmployeeEntity;
+import com.emp.repo.EmployeeRepo;
 import com.emp.service.EmployeeService;
+
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -36,6 +40,11 @@ public class EmployeeController {
 
 	@Autowired
 	private AuthenticationManager authenticatiManager;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private EmployeeRepo repo;
 
 	@PostMapping("/register")
 	public ResponseEntity<EmployeeEntity> saveDetails(@RequestBody @Valid EmployeeDTO dto) {
@@ -104,13 +113,19 @@ public class EmployeeController {
 
 	}
 
-
-
 //	@PostMapping("/login")
 //	public ResponseEntity<EmployeeDTO> loginUser(@RequestBody EmployeeLoginDTO loging)
 //	{
 //		EmployeeDTO login=service.employeeLogin(loging);
 //		return new ResponseEntity<>(login,HttpStatus.OK);
 //	}
+
+	@PutMapping("/changePassword/{email}")
+	public ResponseEntity<String> changePassword(@PathVariable("email") String email,
+			@RequestBody ChangePassword changePassword) {
+		service.changePassword(email, changePassword);
+		return new ResponseEntity<>("Password changed successfully", HttpStatus.OK);
+	}
+	
 
 }

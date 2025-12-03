@@ -2,6 +2,7 @@ package com.emp.service;
 
 import java.util.List;
 
+import com.emp.dto.ChangePassword;
 import com.emp.dto.EmployeeDTO;
 import com.emp.dto.EmployeeLoginDTO;
 import com.emp.dto.UserRequest;
@@ -34,6 +35,8 @@ public interface EmployeeService {
 	public EmployeeEntity findByFristnameAndLastname(String firstName, String lastName);
 
 	public EmployeeDTO employeeLogin(EmployeeLoginDTO loginDTO);
+	
+	public void changePassword(String email,ChangePassword changePassword);
 	
 
 
