@@ -6,9 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import lombok.Data;
 
@@ -28,6 +26,9 @@ public class EmployeeEntity {
 	@Column(name = "lastName")
 	private String lastName;
 
+	@Column(name = "gender")
+	private String gender;
+
 	@NotNull
 	@Column(name = "email")
 	private String email;
@@ -43,6 +44,6 @@ public class EmployeeEntity {
 
 	@Column(name = "confirmPassword")
 	private String confirmPassword;
-	
+
 
 }

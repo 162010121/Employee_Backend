@@ -29,4 +29,7 @@ public interface EmployeeRepo extends JpaRepository<EmployeeEntity, Long> {
 	@Transactional
 	@Query(value = " DELETE * FROM employee ud WHERE ud.email = :email ", nativeQuery = true)
 	EmployeeEntity deleteByEmail(@Param(value = "email") String email);
+	
+	
+	
 }

@@ -1,7 +1,9 @@
 package com.emp.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.emp.dto.ChangePassword;
 import com.emp.dto.EmployeeDTO;
 import com.emp.dto.EmployeeLoginDTO;
-
 import com.emp.dto.UserRequest;
 import com.emp.entity.EmployeeEntity;
 import com.emp.exception.UserCustomException;
@@ -26,6 +27,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+
+	
 
 	@Override
 	public EmployeeEntity saveDetails(EmployeeDTO dto) {
@@ -132,13 +136,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 //convert to Entity to Dto
 
 	public EmployeeEntity entityToDTO(EmployeeDTO dto) {
+		
+		
+		
 		EmployeeEntity entity = new EmployeeEntity();
 		entity.setFirstName(dto.getFirstName());
 		entity.setLastName(dto.getLastName());
+		entity.setGender(dto.getGender());
 		entity.setEmail(dto.getEmail());
 		entity.setPassword(dto.getPassword());
 		entity.setConfirmPassword(dto.getConfirmPassword());
 		entity.setSalary(dto.getSalary());
+		
+		
 
 		return entity;
 
@@ -162,6 +172,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 				employeeDTO.setFirstName(findByEmail.getFirstName());
 				employeeDTO.setLastName(findByEmail.getLastName());
 				employeeDTO.setEmail(findByEmail.getEmail());
+				employeeDTO.setGender(findByEmail.getGender());
 				employeeDTO.setPassword(findByEmail.getPassword());
 				employeeDTO.setLoginAt(new Date(System.currentTimeMillis()));
 				employeeDTO.setSalary(findByEmail.getSalary());
@@ -247,11 +258,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 		if (!changePassword.getNewPassword().equals(changePassword.getConfirmPassword())) {
 			throw new UserCustomException("New password and confirm password do not match");
 		}
+	
 
 		entity.setPassword(changePassword.getNewPassword());
 		entity.setConfirmPassword(changePassword.getConfirmPassword());
 		repo.save(entity);
 
 	}
+
+	
+
+	
 
 }
